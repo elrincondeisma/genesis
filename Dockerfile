@@ -1,4 +1,4 @@
-FROM php:8.0.11-fpm-alpine
+FROM php:8.1.11-fpm-alpine
 RUN apk --no-cache upgrade && \
     apk --no-cache add bash git sudo openssh libssh2  libxml2-dev oniguruma-dev autoconf gcc g++ make npm freetype-dev libjpeg-turbo-dev libpng-dev libzip-dev
 
