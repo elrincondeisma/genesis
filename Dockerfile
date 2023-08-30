@@ -8,7 +8,7 @@ RUN apk --no-cache upgrade && \
 
 # PHP: Install php extensions
 RUN pecl channel-update pecl.php.net
-RUN pecl install pcov ssh2 swoole
+RUN pecl install pcov  swoole
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN docker-php-ext-install mbstring xml iconv pcntl gd zip sockets pdo  pdo_mysql bcmath soap
 RUN docker-php-ext-enable mbstring xml gd iconv zip pcov pcntl sockets bcmath pdo  pdo_mysql soap swoole
