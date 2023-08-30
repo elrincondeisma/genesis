@@ -1,4 +1,4 @@
-FROM icatala198724/octaneimage
+FROM icatala198724/octaneimage:multi
 
 WORKDIR /app
 COPY . .
