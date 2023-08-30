@@ -1,15 +1,34 @@
-FROM icatala198724/octaneimage:multi
+# Use an official PHP Apache image as the base
+FROM php:8.1-apache
 
-WORKDIR /app
-COPY . .
+# Set the working directory in the container
+WORKDIR /var/www/html
 
-RUN composer install
-RUN composer require laravel/octane spiral/roadrunner
+# Copy the application files to the container
+COPY . /var/www/html/
 
-COPY .env.example .env
+# Install system dependencies
+RUN apt-get update && \
+    apt-get install -y \
+    git \
+    libpng-dev \
+    libjpeg-dev \
+    zip \
+    unzip && docker-php-ext-configure gd --with-jpeg \
+    && docker-php-ext-install gd pdo pdo_mysql
 
-RUN php artisan key:generate
-RUN php artisan octane:install --server="swoole"
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-CMD php artisan octane:start --server="swoole" --host="0.0.0.0" --port=8080
-EXPOSE 8080
+# Install PHP extensions required by your application
+RUN docker-php-ext-install pdo pdo_mysql
+
+# Install application dependencies using Composer
+RUN composer install --no-interaction --optimize-autoloader
+
+# Set up Apache virtual host
+COPY apache.conf /etc/apache2/sites-available/000-default.conf
+RUN a2enmod rewrite
+
+# Start Apache server
+CMD ["apache2-foreground"]
