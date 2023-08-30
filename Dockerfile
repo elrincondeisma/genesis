@@ -11,5 +11,5 @@ COPY .env.example .env
 RUN php artisan key:generate
 RUN php artisan octane:install --server="swoole"
 
-CMD php artisan octane:start --server="swoole" --host="0.0.0.0" --port=80
-EXPOSE 80
+CMD php artisan octane:start --server="swoole" --host="0.0.0.0" --port=8080
+EXPOSE 8080
